@@ -5,3 +5,5 @@ pip install --upgrade numpy
 
 Run the virtual environment.
 In command prompt: python se_ui2.py
+
+Test edit to see if I'm actually a contributor
