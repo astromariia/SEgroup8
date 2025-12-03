@@ -1,6 +1,0 @@
-path: /content/drive/MyDrive/ColabNotebooks/all_images
-train: images/train
-val: images/val
-nc: 6
-
-names: ['Dalek','cats', 'dog', 'person','Lightsaber', 'Red Lightsaber']
