@@ -5,7 +5,7 @@ pipeline {
     steps {
         sh """
             . venv/bin/activate
-            python detect.py --weights yoloweights.pt --source data/test_images
+            python detect.py --weights best.pt --source data/test_images
         """
     }
 }
