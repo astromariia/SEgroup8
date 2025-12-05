@@ -7,7 +7,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Checkout Repository') {
             steps {
                 checkout scm
             }
@@ -20,24 +20,16 @@ pipeline {
                     . ${VENV}/bin/activate
                     pip install --upgrade pip
                     pip install ultralytics
+                    pip install -r requirements.txt || true
                 """
             }
         }
 
-        stage('Run YOLO Model') {
+        stage('Run Model Test Script') {
             steps {
                 sh """
                     . ${VENV}/bin/activate
-                    yolo predict model=best.pt source=images/ save=True name=jenkins_output
-                """
-            }
-        }
-
-        stage('Evaluate Accuracy (Placeholder)') {
-            steps {
-                sh """
-                    . ${VENV}/bin/activate
-                    python accuracy_eval_placeholder.py --predictions runs/detect/jenkins_output --output metrics.json
+                    python modelTest.py
                 """
             }
         }
@@ -45,8 +37,9 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'runs/detect/jenkins_output/**', fingerprint: true
-            archiveArtifacts artifacts: 'metrics.json', fingerprint: true
+            archiveArtifacts artifacts: '**/*.txt', fingerprint: true
+            archiveArtifacts artifacts: '**/*.json', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png', fingerprint: true
         }
     }
 }
