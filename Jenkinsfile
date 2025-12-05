@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        PYTHON = "C:\\Users\\speed\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
         VENV = "venv"
     }
 
@@ -16,11 +17,11 @@ pipeline {
         stage('Set Up Python Environment') {
             steps {
                 bat """
-                    python -m venv %VENV%
+                    "%PYTHON%" -m venv %VENV%
                     call %VENV%\\Scripts\\activate
-                    python -m pip install --upgrade pip
-                    pip install ultralytics
-                    if exist requirements.txt pip install -r requirements.txt
+                    "%PYTHON%" -m pip install --upgrade pip
+                    "%PYTHON%" -m pip install ultralytics
+                    if exist requirements.txt "%PYTHON%" -m pip install -r requirements.txt
                 """
             }
         }
@@ -29,7 +30,7 @@ pipeline {
             steps {
                 bat """
                     call %VENV%\\Scripts\\activate
-                    python modelTest.py
+                    "%PYTHON%" modelTest.py
                 """
             }
         }
