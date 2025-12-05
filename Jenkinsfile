@@ -38,9 +38,10 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '**/*.txt', fingerprint: true
-            archiveArtifacts artifacts: '**/*.json', fingerprint: true
-            archiveArtifacts artifacts: '**/*.png', fingerprint: true
+            archiveArtifacts artifacts: '**/*.txt', fingerprint: true, allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/*.json', fingerprint: true, allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/*.png', fingerprint: true, allowEmptyArchive: true
         }
     }
+
 }
