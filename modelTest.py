@@ -3,9 +3,10 @@ from collections import defaultdict
 import ultralytics
 from ultralytics import YOLO
 
+success = True
 images_dir = Path("images/val")
 labels_dir = Path("labels/val")
-
+threshold = 0.75  # minimum per-class accuracy
 image_paths = sorted(list(images_dir.glob("*.jpg")) +
                      list(images_dir.glob("*.png")) +
                      list(images_dir.glob("*.jpeg")))
@@ -77,3 +78,10 @@ for cls_id in sorted(class_totals.keys()):
     correct = class_correct[cls_id]
     acc = correct / total if total > 0 else 0.0
     print(f"{cls_id} ({class_names[cls_id]}): {correct}/{total} = {acc*100:.2f}%")
+    if acc < threshold:
+        success = False
+        print(f"Class {cls_id} accuracy {acc*100:.2f}% fails threshold of {threshold*100:.2f}%")
+if success:
+    exit(0)
+else:
+    exit(1)
