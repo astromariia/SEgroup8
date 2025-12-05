@@ -1,16 +1,17 @@
 from pathlib import Path
 from collections import defaultdict
+import ultralytics
 from ultralytics import YOLO
 
-images_dir = Path("/images/val")
-labels_dir = Path("/labels/val")
+images_dir = Path("images/val")
+labels_dir = Path("labels/val")
 
 image_paths = sorted(list(images_dir.glob("*.jpg")) +
                      list(images_dir.glob("*.png")) +
                      list(images_dir.glob("*.jpeg")))
 
-trained_model = YOLO("/content/drive/MyDrive/ColabNotebooks/all_images_training/run_2/weights/best.pt")
-
+trained_model = YOLO("best.pt")
+print(len(image_paths))
 total_images = 0
 correct_images = 0
 
@@ -48,7 +49,7 @@ for img_path in image_paths:
         verbose=False
     )
     r = results[0]
-
+    print("Image processed")
     # predicted classes
     if r.boxes is not None and len(r.boxes) > 0:
         pred_classes = set(r.boxes.cls.cpu().numpy().astype(int).tolist())
@@ -64,7 +65,7 @@ for img_path in image_paths:
         class_totals[cls_id] += 1
         if cls_id in pred_classes:
             class_correct[cls_id] += 1
-
+print("Images should be processed")
 # Overall accuracy
 accuracy = correct_images / total_images if total_images > 0 else 0.0
 
