@@ -15,20 +15,20 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                sh """
-                    python3 -m venv ${VENV}
-                    . ${VENV}/bin/activate
-                    pip install --upgrade pip
+                bat """
+                    python -m venv %VENV%
+                    call %VENV%\\Scripts\\activate
+                    python -m pip install --upgrade pip
                     pip install ultralytics
-                    pip install -r requirements.txt || true
+                    if exist requirements.txt pip install -r requirements.txt
                 """
             }
         }
 
         stage('Run Model Test Script') {
             steps {
-                sh """
-                    . ${VENV}/bin/activate
+                bat """
+                    call %VENV%\\Scripts\\activate
                     python modelTest.py
                 """
             }
